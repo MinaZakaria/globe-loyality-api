@@ -3,18 +3,19 @@
 namespace App\Exceptions;
 
 use Exception;
+use \Illuminate\Http\Request;
+use \Illuminate\Http\Response;
+use \Illuminate\Http\JsonResponse;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+
+use App\Exceptions\Reporter;
 
 class Handler extends ExceptionHandler
 {
     /**
-     * A list of the exception types that are not reported.
-     *
-     * @var array
+     * @var Reporter
      */
-    protected $dontReport = [
-        //
-    ];
+    private $reporter;
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
@@ -25,11 +26,13 @@ class Handler extends ExceptionHandler
         'password',
         'password_confirmation',
     ];
-
     /**
+     * @override
      * Report or log an exception.
      *
-     * @param  \Exception  $exception
+     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
+     *
+     * @param  \Exception $exception
      * @return void
      */
     public function report(Exception $exception)
@@ -38,14 +41,49 @@ class Handler extends ExceptionHandler
     }
 
     /**
+     * @override
      * Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Exception               $exception
+     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        if (config('app.debug')) {
+            if ($exception instanceof ClientException) {
+                $exception = $exception->getException();
+            }
+            return parent::render($request, $exception);
+        }
+        return $this->handle($request, $exception);
+    }
+
+    /**
+     * handle exceptions in case of app.debug=false
+     *
+     * @param  Request $request
+     * @param  ClientException|Exception $exception
+     * @return JsonResponse
+     */
+    public function handle($request, $exception)
+    {
+        if (! ($exception instanceof ClientException)) {
+            if(!isset($this->reporter)) {
+                $this->reporter = $this->container->make(Reporter::class);
+            }
+            $exception = $this->reporter->report($exception);
+        }
+
+        return $this->handleClientException($request, $exception);
+    }
+
+    /**
+     * @param  Request $request
+     * @param  ClientException $exception
+     * @return JsonResponse
+     */
+    private function handleClientException(Request $request, ClientException $exception) {
+        return response()->json($exception->toArray(), $exception->getStatusCode());
     }
 }

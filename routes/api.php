@@ -13,21 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::group(['prefix' => 'users'], function () {
 
-Route::group([
-
-    'middleware' => 'api',
-    'prefix' => 'auth'
-
-], function ($router) {
-
-    Route::post('login', 'AuthController@login');
-    Route::post('register', 'AuthController@create');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
-
+    Route::post('auth', 'UserController@authenticate');
+    Route::post('register', 'UserController@register');
+    Route::get('me', 'UserController@me')->middleware('auth:api', 'verified');
+    Route::post('logout', 'UserController@logout')->middleware('auth:api');
+    Route::post('refresh', 'UserController@refresh')->middleware('auth:api');
+    Route::get('email/verify/{id}', 'UserController@verifyEmail')->name('verification.verify')->middleware('signed');
+    // Route::get('email/resend', 'UserController@resend')->name('verification.resend');
 });
