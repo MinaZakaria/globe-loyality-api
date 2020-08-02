@@ -14,6 +14,9 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 use Repository\Exceptions\ItemNotFoundException;
 use App\Http\Exceptions\ValidationException;
+use App\Http\Exceptions\TokenInvalidException;
+use App\Http\Exceptions\TokenIsExpiredException;
+use App\Http\Exceptions\TokenNotProvidedException;
 
 class Reporter
 {
@@ -43,6 +46,15 @@ class Reporter
             case ValidationException::class:
                 $type = ErrorType::INPUT_VALIDATION;
                 $details = $exception->getDetails();
+                break;
+            case TokenInvalidException::class:
+                $type = ErrorType::TOKEN_INVALID;
+                break;
+            case TokenIsExpiredException::class:
+                $type = ErrorType::TOKEN_EXPIRED;
+                break;
+            case TokenNotProvidedException::class:
+                $type = ErrorType::TOKEN_NOT_PROVIDED;
                 break;
             default:
                 $type = ErrorType::UNKNOWN;

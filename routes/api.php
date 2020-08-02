@@ -17,9 +17,25 @@ Route::group(['prefix' => 'users'], function () {
 
     Route::post('auth', 'UserController@authenticate');
     Route::post('register', 'UserController@register');
-    Route::get('me', 'UserController@me')->middleware('auth:api', 'verified');
-    Route::post('logout', 'UserController@logout')->middleware('auth:api');
-    Route::post('refresh', 'UserController@refresh')->middleware('auth:api');
+    Route::get('me', 'UserController@me')->middleware('auth', 'verified');
+    Route::post('logout', 'UserController@logout')->middleware('auth');
+    Route::get('/', 'UserController@list')->middleware('auth');
+    Route::post('/{id}/approve', 'UserController@approve')->middleware('auth');
+    Route::post('/{id}/block', 'UserController@block')->middleware('auth');
+    Route::get('/{id}', 'UserController@view')->middleware('auth', 'verified');
+    Route::post('refresh', 'UserController@refresh')->middleware('auth');
     Route::get('email/verify/{id}', 'UserController@verifyEmail')->name('verification.verify')->middleware('signed');
     // Route::get('email/resend', 'UserController@resend')->name('verification.resend');
+});
+
+Route::group(['prefix' => 'challenges'], function () {
+
+    Route::post('/', 'ChallengeController@create')->middleware('auth', 'verified');
+    Route::get('/', 'ChallengeController@list')->middleware('auth', 'verified');
+    Route::post('/{id}/finish', 'ChallengeController@finish')->middleware('auth', 'verified');
+});
+
+Route::group(['prefix' => 'programs'], function () {
+
+    Route::get('/', 'ProgramController@list')->middleware('auth', 'verified');
 });

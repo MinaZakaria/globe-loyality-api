@@ -4,7 +4,9 @@ namespace App\Http\Request\User;
 
 use App\Http\Request\ApplicationRequest;
 
-class RegisterRequest extends ApplicationRequest
+use Illuminate\Support\Facades\Auth;
+
+class ApproveUserRequest extends ApplicationRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +15,8 @@ class RegisterRequest extends ApplicationRequest
      */
     public function authorize()
     {
-        return true;
+        $currentUser = Auth::user();
+        return $currentUser->is_admin;
     }
 
     /**
@@ -23,11 +26,6 @@ class RegisterRequest extends ApplicationRequest
      */
     public function rules()
     {
-        return [
-            'name'=>'required|max:55',
-            'email'=>'email|required|unique:users',
-            'password'=>'required|confirmed',
-            'role_id'=>'required|int|min:1',
-        ];
+        return [];
     }
 }

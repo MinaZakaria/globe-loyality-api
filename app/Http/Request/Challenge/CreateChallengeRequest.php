@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Request\User;
+namespace App\Http\Request\Challenge;
 
 use App\Http\Request\ApplicationRequest;
 
-class RegisterRequest extends ApplicationRequest
+class CreateChallengeRequest extends ApplicationRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,13 @@ class RegisterRequest extends ApplicationRequest
     public function rules()
     {
         return [
-            'name'=>'required|max:55',
-            'email'=>'email|required|unique:users',
-            'password'=>'required|confirmed',
-            'role_id'=>'required|int|min:1',
+            'name'=>'required|max:55|unique:challenges',
+            'description'=>'required',
+            'program_id'=>'required|int|min:1',
+            'image'=>'nullable',
+            'first_prize'=>'int|min:0',
+            'second_prize'=>'int|min:0',
+            'third_prize'=>'int|min:0',
         ];
     }
 }

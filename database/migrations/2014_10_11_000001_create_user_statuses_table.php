@@ -4,21 +4,26 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserRolesTable extends Migration    // @codingStandardsIgnoreLine
+class CreateUserStatusesTable extends Migration    // @codingStandardsIgnoreLine
 {
     /**
+     * Schema table name to migrate
+     * @var string
+     */
+    public $set_schema_table = 'user_statuses';
+
+    /**
      * Run the migrations.
-     * @table employee_roles
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('user_roles', function (Blueprint $table) {
+        Schema::create($this->set_schema_table, function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
             $table->tinyIncrements('id');
-            $table->string('name', 50)->unique();
+            $table->string('name', 45);
         });
     }
 
@@ -29,6 +34,6 @@ class CreateUserRolesTable extends Migration    // @codingStandardsIgnoreLine
      */
     public function down()
     {
-        Schema::dropIfExists('user_roles');
+        Schema::dropIfExists($this->set_schema_table);
     }
 }

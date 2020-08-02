@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Request\User\LoginRequest;
+use App\Http\Request\User\ApproveUserRequest;
+use App\Http\Request\User\BlockUserRequest;
 use App\Http\Request\User\RegisterRequest;
+
 use Illuminate\Foundation\Auth\VerifiesEmails;
 
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +37,36 @@ class UserController
         $validatedData = $request->validated();
 
         $data = $this->userService->register($validatedData);
+
+        return response()->json(['data' => $data], 200);
+    }
+
+    public function approve(ApproveUserRequest $request, int $id)
+    {
+        $data = $this->userService->approve($id);
+
+        return response()->json(['data' => $data], 200);
+    }
+
+    public function block(BlockUserRequest $request, int $id)
+    {
+        $data = $this->userService->block($id);
+
+        return response()->json(['data' => $data], 200);
+    }
+
+    public function view(int $id)
+    {
+        $data = $this->userService->find($id);
+
+        return response()->json(['data' => $data], 200);
+    }
+
+    public function list(Request $request)
+    {
+        $status_id = $request->query('status_id');
+
+        $data = $this->userService->list($status_id);
 
         return response()->json(['data' => $data], 200);
     }

@@ -9,6 +9,7 @@ class ErrorType
     public const UNKNOWN = 'UNKNOWN';
     public const INPUT_VALIDATION = 'INPUT_VALIDATION';
     public const UNAUTHORIZED = 'UNAUTHORIZED';
+    public const EMAIL_NOT_VERIFIED = 'EMAIL_NOT_VERIFIED';
     public const TOKEN_INVALID = 'TOKEN_INVALID';
     public const TOKEN_EXPIRED = 'TOKEN_EXPIRED';
     public const CANNOT_ASSIGN = 'CANNOT_ASSIGN';
@@ -17,6 +18,7 @@ class ErrorType
     public const ITEM_NOT_FOUND = 'ITEM_NOT_FOUND';
     public const ITEMS_NOT_FOUND = 'ITEMS_NOT_FOUND';
     public const FILE_NOT_FOUND = 'FILE_NOT_FOUND';
+    public const ITEM_IS_PENDING = 'ITEM_IS_PENDING';
     public const ITEM_IS_OPENED = 'ITEM_IS_OPENED';
     public const ITEM_NOT_OPENED = 'ITEM_NOT_OPENED';
     public const UNAUTHENTICATED = 'UNAUTHENTICATED';
@@ -47,6 +49,8 @@ class ErrorType
         401 => [
             self::TOKEN_INVALID => 'Token invalid!',
             self::TOKEN_EXPIRED => 'Token expired!',
+            self::ITEM_IS_PENDING => 'Item is pending',
+            self::EMAIL_NOT_VERIFIED => 'Email not verified',
             self::UNAUTHENTICATED => 'Authentication failed!',
             self::TOKEN_NOT_PROVIDED => 'Token not provided!',
         ],

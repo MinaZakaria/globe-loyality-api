@@ -17,8 +17,9 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email')->unique();
+            $table->integer('points')->default(0);
             $table->tinyInteger('is_admin')->default(0);
-            $table->tinyInteger('is_active')->default(0);
+            $table->unsignedTinyInteger('status_id')->index();
             $table->unsignedTinyInteger('role_id')->nullable()->index();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -27,6 +28,11 @@ class CreateUsersTable extends Migration
 
             $table->foreign('role_id')
                 ->references('id')->on('user_roles')
+                ->onDelete('restrict')
+                ->onUpdate('restrict');
+
+            $table->foreign('status_id')
+                ->references('id')->on('user_statuses')
                 ->onDelete('restrict')
                 ->onUpdate('restrict');
         });

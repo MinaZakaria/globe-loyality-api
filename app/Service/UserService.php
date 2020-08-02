@@ -6,6 +6,9 @@ use JWTAuth;
 
 use \Exception;
 use App\Exceptions\ItemNotFoundException;
+use App\Exceptions\ItemIsPendingException;
+use App\Exceptions\UnAuthenticatedException;
+use App\Exceptions\EmailNotVerifiedException;
 
 use App\Repository\UserRepository;
 
@@ -15,10 +18,11 @@ use App\Reporter\UserReporter;
 
 use App\Model\User;
 
+USE App\Constants\UserRole;
+USE App\Constants\UserStatus;
+
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-
-use App\Exceptions\UnAuthenticatedException;
 
 class UserService extends ServiceProxy
 {
@@ -44,7 +48,11 @@ class UserService extends ServiceProxy
 
         $user = Auth::user();
         if(! $user->email_verified_at){
-            throw new UnAuthenticatedException(['email' => 'not verified']);
+            throw new EmailNotVerifiedException();
+        }
+
+        if($user->status_id === UserStatus::PENDING){
+            throw new ItemIsPendingException(User::class, $user->id);
         }
 
         return ['user' => $user, 'token' => $token];
@@ -52,12 +60,19 @@ class UserService extends ServiceProxy
 
     protected function register(array $data)
     {
-        $role = $this->userRoleService->find($data['roleId']);
+        $role = $this->userRoleService->find($data['role_id']);
+
+        if ($role->id === UserRole::MEDICAL_REP) {
+            $status_id = UserStatus::ACTIVE;
+        } else {
+            $status_id = UserStatus::PENDING;
+        }
 
         $userData = [
             'name'=> $data['name'],
             'email'=> $data['email'],
-            'roleId'=> $role->id,
+            'role_id'=> $data['role_id'],
+            'status_id'=> $status_id,
             'password'=> Hash::make($data['password']),
         ];
 
@@ -83,5 +98,34 @@ class UserService extends ServiceProxy
         $user = $this->find($userId);
         $user->email_verified_at = date('Y-m-d g:i:s');
         $user->save();
+    }
+
+    protected function approve(int $userId)
+    {
+        $user = $this->find($userId);
+        $user->status_id = UserStatus::ACTIVE;
+        $user->save();
+
+        return $user;
+    }
+
+    protected function block(int $userId)
+    {
+        $user = $this->find($userId);
+        $user->status_id = UserStatus::IN_ACTIVE;
+        $user->save();
+
+        return $user;
+    }
+
+    protected function list($status_id)
+    {
+        $filterBy = [];
+        if(isset($status_id)) {
+            $filterBy['status_id'] = $status_id;
+        }
+
+        $users = $this->userRepository->findBy($filterBy);
+        return $users;
     }
 }
