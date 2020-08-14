@@ -44,6 +44,7 @@ class ChallengeService extends ServiceProxy
         ];
 
         $challenge = $this->challengeRepository->create($challengeData);
+        $challenge->refresh();
         return $challenge;
     }
 
