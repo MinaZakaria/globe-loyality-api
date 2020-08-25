@@ -35,15 +35,9 @@ class ChallengeService extends ServiceProxy
     {
         $program = $this->progarmService->find($data['program_id']);
 
-        $challengeData = [
-            'name'=> $data['name'],
-            'description'=> $data['description'],
-            'program_id'=> $data['program_id'],
-            'image_url'=> null,
-            'created_by'=> Auth::id()
-        ];
+        $data['created_by'] = Auth::id();
 
-        $challenge = $this->challengeRepository->create($challengeData);
+        $challenge = $this->challengeRepository->create($data);
         $challenge->refresh();
         return $challenge;
     }

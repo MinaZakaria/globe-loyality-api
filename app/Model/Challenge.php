@@ -14,7 +14,7 @@ class Challenge extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'description', 'image_url', 'program_id', 'is_active', 'created_by', 'second_prize', 'third_prize'
+        'name', 'description', 'image_url', 'program_id', 'is_active', 'created_by', 'first_prize', 'second_prize', 'third_prize'
     ];
 
     protected $casts = [

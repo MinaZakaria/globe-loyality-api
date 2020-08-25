@@ -8,6 +8,7 @@ use App\Exceptions\ClientException;
 use App\Exceptions\ErrorType;
 use App\Exceptions\ItemNotFoundException;
 use App\Exceptions\ItemIsPendingException;
+use App\Exceptions\ItemIsBlockedException;
 use App\Exceptions\UnAuthenticatedException;
 use App\Exceptions\EmailNotVerifiedException;
 
@@ -27,6 +28,9 @@ class UserReporter extends Reporter
                 break;
             case ItemIsPendingException::class:
                 $type = ErrorType::ITEM_IS_PENDING;
+                break;
+            case ItemIsBlockedException::class:
+                $type = ErrorType::ITEM_IS_BLOCKED;
                 break;
             case EmailNotVerifiedException::class:
                 $type = ErrorType::EMAIL_NOT_VERIFIED;

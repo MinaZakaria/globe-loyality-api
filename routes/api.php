@@ -37,5 +37,10 @@ Route::group(['prefix' => 'challenges'], function () {
 
 Route::group(['prefix' => 'programs'], function () {
 
-    Route::get('/', 'ProgramController@list')->middleware('auth', 'verified');
+    Route::get('/', 'ProgramController@list');
+});
+
+Route::group(['prefix' => 'user-roles'], function () {
+
+    Route::get('/', 'UserRoleController@list');
 });

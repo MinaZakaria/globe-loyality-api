@@ -24,6 +24,7 @@ class ErrorType
     public const UNAUTHENTICATED = 'UNAUTHENTICATED';
     public const ROUTE_NOT_FOUND = 'ROUTE_NOT_FOUND';
     public const ITEM_NOT_ACTIVE = 'ITEM_NOT_ACTIVE';
+    public const ITEM_IS_BLOCKED = 'ITEM_IS_BLOCKED';
     public const ITEMS_NOT_ACTIVE = 'ITEMS_NOT_ACTIVE';
     public const ITEM_IS_CONFIRMED = 'ITEM_IS_CONFIRMED';
     public const INTERNAL_ERROR = 'INTERNAL_ERROR';
@@ -53,6 +54,7 @@ class ErrorType
             self::EMAIL_NOT_VERIFIED => 'Email not verified',
             self::UNAUTHENTICATED => 'Authentication failed!',
             self::TOKEN_NOT_PROVIDED => 'Token not provided!',
+            self::ITEM_IS_BLOCKED => 'Item is blocked',
         ],
         403 => [
             self::UNAUTHORIZED => 'Authorization failed!',

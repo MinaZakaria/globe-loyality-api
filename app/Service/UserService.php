@@ -7,6 +7,7 @@ use JWTAuth;
 use \Exception;
 use App\Exceptions\ItemNotFoundException;
 use App\Exceptions\ItemIsPendingException;
+use App\Exceptions\ItemIsBlockedException;
 use App\Exceptions\UnAuthenticatedException;
 use App\Exceptions\EmailNotVerifiedException;
 
@@ -53,6 +54,10 @@ class UserService extends ServiceProxy
 
         if($user->status_id === UserStatus::PENDING){
             throw new ItemIsPendingException(User::class, $user->id);
+        }
+
+        if($user->status_id === UserStatus::IN_ACTIVE){
+            throw new ItemIsBlockedException(User::class, $user->id);
         }
 
         return ['user' => $user, 'token' => $token];

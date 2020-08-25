@@ -34,4 +34,9 @@ class UserRoleService extends ServiceProxy
 
         return $role;
     }
+
+    protected function list()
+    {
+        return $this->userRoleRepository->all();
+    }
 }
