@@ -7,8 +7,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-use App\Model\Challenge;
-
 use App\Notifications\VerifyEmail;;
 
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
@@ -66,10 +64,5 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmail); // my notification
-    }
-
-    public function wonChallenges()
-    {
-        return $this->belongsToMany(Challenge::class, 'winner_challenge', 'winner_id', 'challenge_id')->withPivot('rank');
     }
 }

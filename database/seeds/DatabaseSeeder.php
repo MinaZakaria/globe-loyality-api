@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             UserRolesTableSeeder::class,
             UserStatusesTableSeeder::class,
             UsersTableSeeder::class,
+            SubmittionStatusesTableSeeder::class,
         ]);
     }
 }

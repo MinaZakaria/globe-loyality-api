@@ -45,6 +45,7 @@ class ErrorType
     public const ITEM_IS_PARTIALLY_PAID = 'ITEM_IS_PARTIALLY_PAID';
     public const ITEM_INVALID = 'ITEM_INVALID';
     public const RELATION_INVALID = 'RELATION_INVALID';
+    public const ITEM_ALREADY_SUBMITTED = 'ITEM_ALREADY_SUBMITTED';
 
     private const MAP = [
         401 => [
@@ -92,7 +93,8 @@ class ErrorType
             self::ITEM_IS_PARTIALLY_PAID => 'Item is partially paid',
             self::ITEM_INVALID => 'Item is invalid',
             self::RELATION_INVALID => "Relation are invalid",
-            self::ITEMS_NOT_FOUND => 'The items requested are not found'
+            self::ITEMS_NOT_FOUND => 'The items requested are not found',
+            self::ITEM_ALREADY_SUBMITTED => 'You already Submitted on this challenge before.'
         ],
         520 => [
             self::UNKNOWN => 'Unknown exception',

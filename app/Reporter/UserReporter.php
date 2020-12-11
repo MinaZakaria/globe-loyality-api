@@ -122,4 +122,24 @@ class UserReporter extends Reporter
 
         $this->throw($type, $exception);
     }
+
+    public function block(Exception $exception)
+    {
+        $exceptionClass = get_class($exception);
+
+        if ($exceptionClass === ClientException::class) {
+            $exception = $exception->getException();
+            $exceptionClass = get_class($exception);
+        }
+        switch ($exceptionClass) {
+            case ItemNotFoundException::class:
+                $type = ErrorType::ITEM_NOT_FOUND;
+                break;
+            default:
+                $type = ErrorType::UNKNOWN;
+                break;
+        }
+
+        $this->throw($type, $exception);
+    }
 }

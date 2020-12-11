@@ -16,7 +16,7 @@ class UserStatusesTableSeeder extends Seeder
         if ($statuses->count() === 0) {
             DB::table('user_statuses')->insert([
                 ['id' => 1, 'name' => 'Active'],
-                ['id' => 2, 'name' => 'Pinding'],
+                ['id' => 2, 'name' => 'Pending'],
                 ['id' => 3, 'name' => 'In Active'],
             ]);
         }

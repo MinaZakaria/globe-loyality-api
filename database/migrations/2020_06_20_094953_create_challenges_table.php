@@ -21,9 +21,6 @@ class CreateChallengesTable extends Migration
             $table->unsignedSmallInteger('program_id')->index();
             $table->unsignedBigInteger('created_by')->index();
             $table->tinyInteger('is_active')->default(1);
-            $table->integer('first_prize')->default(0);
-            $table->integer('second_prize')->default(0);
-            $table->integer('third_prize')->default(0);
 
             $table->timestamps();
 
